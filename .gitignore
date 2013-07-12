@@ -28,7 +28,11 @@ nosetests.xml
 
 # Translations
 *.mo
-
+*.ziw
+src/wizcore/unzip
+src/wizcore/data
+src/wizcore/documentModel
+src/wizcore/sourcefile
 # Mr Developer
 .mr.developer.cfg
 .project
