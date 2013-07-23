@@ -104,6 +104,7 @@ import codecs
 removeWordsList = ['gif','index',u'和','jpg','1','3','com','4','10', u'了',u'在', u'是' ,'10','2',u'后', u'的', 'place', 'nbsp', 'holder','png','files','http']
 def initData(dataFilePath, numberOfKinds, makStepCount):
 
+    global ClassModelList
     wordsMap = {}
     i = 0
     documents = os.listdir(dataFilePath)
@@ -130,7 +131,6 @@ def initData(dataFilePath, numberOfKinds, makStepCount):
         DocumentList.append(document)
         i += 1
     stepCount = 0
-    print 'model kind is %d' % len(ClassModelList)
     while stepCount < makStepCount:
         for kind in ClassModelList:
             kind.clearDocumentList()
@@ -164,4 +164,10 @@ def initData(dataFilePath, numberOfKinds, makStepCount):
             print s
         print stepCount
         print '----------'
-initData('./documentModel/', 50 ,100)
+if __name__ == '__main__':
+    initData('./documentModel/', 100 ,1)
+    predictModelPath = 'predictModel'
+    predictFile = open(predictModelPath, 'w')
+    pickle.dump(ClassModelList, predictFile)
+    predictFile.close()
+
