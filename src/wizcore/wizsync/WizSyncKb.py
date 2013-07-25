@@ -26,32 +26,42 @@ class WizSyncKb():
                 print doc.guid
                 if doc.version > maxVer:
                     maxVer = doc.version
-#                try:
                 docguid = doc.guid
                 filePath = DocumentZiwPath(self.accountUserId, self.kbguid, docguid)
                 self.kbserver.downloadObject(filePath, docguid, 'document')
                 from wizfile import DocumentUnZipPath
                 import zipfile
 
-                azip = zipfile.ZipFile(filePath)
-                extractPath = DocumentUnZipPath(self.accountUserId, self.kbguid, docguid)
-                azip.extractall(extractPath)
-                indexfilepath = extractPath + '/index.html'
-                model = DocumentModel(docguid, {})
-                model.loadCountMapFromFile(indexfilepath)
+                import shutil
+                try:
+                    azip = zipfile.ZipFile(filePath)
+                    extractPath = DocumentUnZipPath(self.accountUserId, self.kbguid, docguid)
+                    azip.extractall(extractPath)
+                    indexfilepath = extractPath + '/index.html'
+                    model = DocumentModel(docguid, {})
+                    model.loadCountMapFromFile(indexfilepath)
+                    azip.close()
+                    shutil.rmtree(extractPath)
+                    shutil.os.remove(filePath)
+                except:
+                    import os
+                    if os.path.exists(extractPath):
+                        shutil.rmtree(extractPath)
+                    if os.path.exists(filePath):
+                        shutil.os.remove(filePath)
+                     
                 
                 from wizfile import DocumentModelPath
-                modelPath = DocumentModelPath(self.accountUserId, self.kbguid, docguid)
+                try:
+                    modelPath = DocumentModelPath(self.accountUserId, self.kbguid, docguid)
+                except:
+                    print '******error****** %s' %docguid
+                    continue
                 modelfile = open(modelPath, 'w')
                 pickle.dump(model, modelfile)
                 modelfile.close()
-                
-                azip.close()
-
-                import shutil
-                shutil.os.remove(filePath)
-                shutil.rmtree(extractPath)
             
+            self.kbDataBase.setDocumentVersion(maxVer)
             if maxVer <= version:
                 break
             version = maxVer

@@ -43,7 +43,18 @@ def DocumentAllModelsPath(accountUserId, kbguid):
     modelPath = pathJoin(accountPath, 'models')
     ensurePathExist(modelPath)
     return modelPath
-    
+
+def DocumentTFIDFModelsPath(accountUserId, kbguid):
+    accountPath = AccountHomePath(accountUserId)
+    modelPath = pathJoin(accountPath, 'tfidfmodels')
+    ensurePathExist(modelPath)
+    return modelPath
+
+def DocumentTFIDFModelFilePath(accountUserId, kbguid):
+    modelPath = DocumentTFIDFModelsPath(accountUserId, kbguid)
+    return modelPath
+
+
 
 def DocumentModelPath(accountUserId, kbguid, documentguid):
     modelPath = DocumentAllModelsPath(accountUserId, kbguid)

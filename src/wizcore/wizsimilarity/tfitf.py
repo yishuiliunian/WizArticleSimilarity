@@ -4,6 +4,7 @@ import pickle
 from wizfile import DocumentAllModelsPath
 import os
 import math
+from wizfile import DocumentTFIDFModelsPath
 
 def loadDocumentModelFromFile(filepath):
     sfile = open(filepath, 'r')
@@ -12,6 +13,7 @@ def loadDocumentModelFromFile(filepath):
     return doc
 
 def tfidf(accountUserId, kbguid):
+    tfidfPath = DocumentTFIDFModelsPath(accountUserId, kbguid)
     dataFilePath = DocumentAllModelsPath(accountUserId, kbguid)
     documents = os.listdir(dataFilePath)
     docLength = len(documents)
@@ -38,7 +40,8 @@ def tfidf(accountUserId, kbguid):
     for doc in documentlist:
         for key in doc.wordsMap.keys():
             doc.wordsMap[key] = doc.wordsMap[key] * totalCountMap[key]
-        outfilepath = dataFilePath + '/' + doc.title
+
+        outfilepath = tfidfPath + '/' + doc.title
         outfile = open(outfilepath, 'w')
         pickle.dump(doc, outfile)
         outfile.close()
