@@ -1,4 +1,5 @@
 from DocumentWordsModel import ExtractDocumentRatioModel
+import math
 
 class DocumentModel:
     def __init__(self, title, wordsCountMap):

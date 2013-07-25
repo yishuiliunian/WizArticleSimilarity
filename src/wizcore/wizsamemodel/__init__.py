@@ -1,3 +1,3 @@
 from DocumentModel import DocumentModel
-
-__all__ = ['DocumentModel']
+from KindModel import KindModel
+__all__ = ['DocumentModel', 'KindModel']

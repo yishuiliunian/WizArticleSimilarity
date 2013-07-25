@@ -3,6 +3,7 @@ import math
 import pdb
 import sys
 reload(sys)
+sys.path.append('../')
 sys.setdefaultencoding('utf-8')
 import vimpdb
 import copy
@@ -47,6 +48,8 @@ def maxItemInDictionary(dic, length):
 
 import os
 import codecs
+from wizsamemodel import DocumentModel
+from wizsamemodel import KindModel
 removeWordsList = ['gif','index',u'和','jpg','1','3','com','4','10', u'了',u'在', u'是' ,'10','2',u'后', u'的', 'place', 'nbsp', 'holder','png','files','http']
 def initData(dataFilePath, numberOfKinds, makStepCount):
 
@@ -66,15 +69,15 @@ def initData(dataFilePath, numberOfKinds, makStepCount):
         from wizsamemodel import DocumentModel
         dModel = pickle.load(sfile)
         sfile.close()
-        documentDataMap = dModel.wordsCountMap
+        documentDataMap = dModel.wordsMap
         for w in removeWordsList:
             if w in documentDataMap:
                 documentDataMap.pop(w)
         documentTitle = doc
-        document = Document(documentTitle, documentDataMap)
+        document = DocumentModel(documentTitle, documentDataMap)
         if random.randint(0,docLength) % randomSeed == 0:
             if totalKindModelCount < numberOfKinds:
-                kindModel = ClassModel(document)
+                kindModel = KindModel(document)
                 ClassModelList.append(kindModel)
                 totalKindModelCount += 1
 
@@ -115,7 +118,8 @@ def initData(dataFilePath, numberOfKinds, makStepCount):
         print stepCount
         print '----------'
 if __name__ == '__main__':
-    initData(DocumentAllModelsPath ('yishuiliunian@gmail.com', 'a') ,10,100)
+    from wizfile import DocumentTFIDFModelsPath
+    initData(DocumentTFIDFModelsPath('yishuiliunian@gmail.com', 'a') ,10,100)
     predictModelPath = 'predictModel'
     predictFile = open(predictModelPath, 'w')
     pickle.dump(ClassModelList, predictFile)

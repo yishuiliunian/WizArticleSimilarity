@@ -4,43 +4,21 @@ from decruft import Document
 import codecs
 import html2text
 import math
-
+from wizglobals import topItemsInDictionary
+from wizglobals import subTopItemsIndictionary
 IgnoreWordsFeatureList = ['w', 'x', 'u', 'p', 'c' ,'q']
 
 def getWordsWeight(wordFeature):
-    return 1
-
-    if len(wordFeature) < 1:
-        return 0
-    if wordFeature[0:1] in IgnoreWordsFeatureList:
-        return 0
-    return 1
-
-def subTopItemsIndictionary(dic ,length):
-    wordMap = dic
-    items = sorted(wordMap.items(), key = lambda wordMap:wordMap[1])
-    i = 0
-    ret = {}
-    for item in reversed(items):
-        if i >= length:
-            break
-        i = i + 1
-        ret[item[0]] = item[1]
-    
-    return ret
+    try:
+        if len(wordFeature) < 1:
+            return 0
+        if wordFeature[0:1] in IgnoreWordsFeatureList:
+            return 0
+        return 1
+    except:
+        return 1
 
 
-def topItemsInDictionary(dic ,length):
-    wordMap = dic
-    items = sorted(wordMap.items(), key = lambda wordMap:wordMap[1])
-    i = 0
-    topKeys = []
-    for item in reversed(items):
-        if i >= length:
-            break
-        i = i + 1
-        topKeys.append(item[0])
-    return topKeys  
 
 def extractWordCountModel(content):
     words = pseg.cut(content)
@@ -79,7 +57,7 @@ def extractWordModel(content):
             try:
                 count = wordMap[key]
                 value = float(count)/sumCount
-                wrodRatioMap[key] = math.log(float(count)/sumCount)
+                wrodRatioMap[key] = float(count)/sumCount
             except KeyError:
                 continue
     return subTopItemsIndictionary(wrodRatioMap, 1000)

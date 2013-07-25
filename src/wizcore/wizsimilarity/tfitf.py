@@ -36,7 +36,7 @@ def tfidf(accountUserId, kbguid):
     doclength = len(documentlist)
 
     for key in totalCountMap.keys():
-        totalCountMap[key] = math.log(float(totalCountMap[key]) / docLength)
+        totalCountMap[key] = math.log(doclength/float(totalCountMap[key]))
     for doc in documentlist:
         for key in doc.wordsMap.keys():
             doc.wordsMap[key] = doc.wordsMap[key] * totalCountMap[key]
